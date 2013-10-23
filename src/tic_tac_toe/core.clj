@@ -1,5 +1,10 @@
 (ns tic-tac-toe.core
-  (:require [tic-tac-toe.interface :refer :all]))
+  (:require [tic-tac-toe.interface :refer :all])
+  (:require [tic-tac-toe.board :refer :all])
+  (:require [tic-tac-toe.round :refer :all]))
 
-(print-board [:X :- :- :X :O :O :O :- :X])
+(defn -main [& args]
+  (if (= (first args) "first")
+    (start {:players [:human :ai] :pieces [:X :O] :board (new-board 3)})
+    (start {:players [:ai :human] :pieces [:X :O] :board (new-board 3)})))
 
