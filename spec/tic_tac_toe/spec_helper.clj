@@ -16,11 +16,9 @@
         other-player (if (= player :ai) :human :ai)
         spaces (possible-moves board)]
     (if (over? board)
-      (cond (draw? board) :draw
+        (cond (draw? board) :draw
             (= player :ai) (check-board board)
             (= player :human) :win)
-      (if (= player :ai)
-        (play-all-boards (make-move board (next-move board piece) piece) other-piece other-player)
-        (for [space spaces]
-          (let [new-board (make-move board space piece)]
-            (play-all-boards new-board other-piece other-player)))))))
+        (if (= player :ai)
+            (recur (make-move board (next-move board piece) piece) other-piece other-player)
+            (pmap #(play-all-boards (make-move board % piece) other-piece other-player) spaces)))))
