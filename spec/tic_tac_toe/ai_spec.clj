@@ -7,24 +7,24 @@
 (describe "Getting the next move"
 
   (it "returns the best move"
-    (should= (next-move [:- :- :-
-                         :- :- :-
-                         :- :- :-] :X) 4)
-    (should= (next-move [:X :X :-
-                         :X :O :O
-                         :O :O :X] :X) 2)
-    (should= (next-move [:X :- :-
-                         :X :O :O
-                         :O :- :X] :X) 2)
-    (should= (next-move [:X :- :-
-                         :X :- :O
-                         :O :O :X] :X) 4)
-    (should= (next-move [:X :X :-
-                         :- :- :-
-                         :O :O :-] :X) 2)
-    (should= (next-move [:- :- :-
-                         :X :X :O
-                         :O :O :X] :X) 0)))
+    (should= 4 (next-move [:- :- :-
+                           :- :- :-
+                           :- :- :-] :X))
+    (should= 2 (next-move [:X :X :-
+                           :X :O :O
+                           :O :O :X] :X))
+    (should= 2 (next-move [:X :- :-
+                           :X :O :O
+                           :O :- :X] :X))
+    (should= 4 (next-move [:X :- :-
+                           :X :- :O
+                           :O :O :X] :X))
+    (should= 2 (next-move [:X :X :-
+                           :- :- :-
+                           :O :O :-] :X))
+    (should= 0 (next-move [:- :- :-
+                           :X :X :O
+                           :O :O :X] :X))))
 
 (describe "Going first"
 

@@ -2,6 +2,7 @@
   (:require [speclj.core :refer :all]
             [tic-tac-toe.ai :refer :all]
             [tic-tac-toe.board :refer :all]))
+
 (defn check-board [board]
   (let [rows (partition 3 board)]
   (println (nth rows 0))
@@ -23,5 +24,3 @@
         (for [space spaces]
           (let [new-board (make-move board space piece)]
             (play-all-boards new-board other-piece other-player)))))))
-
-
