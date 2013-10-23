@@ -2,7 +2,7 @@
   (:require [tic-tac-toe.board :refer :all]))
 
 (defn possible-moves [board]
-  (keep-indexed #(if (= :- %2) %1) board))
+  (keep-indexed #(if (= empty-space %2) %1) board))
 
 (defn board-state-score [board piece]
   (cond (= piece (winner board)) 1
@@ -13,7 +13,7 @@
   (if (= player :ai) 1 -1))
 
 (defn calculate-score [board space player piece depth]
-  (let [other-piece (first (filter #(and (not= piece %) (not= :- %)) board))
+  (let [other-piece (first (filter #(and (not= piece %) (not= empty-space %)) board))
         other-player (if (= player :ai) :human :ai)]
     (let [moved-board (assoc board space piece)]
       (if (over? moved-board)

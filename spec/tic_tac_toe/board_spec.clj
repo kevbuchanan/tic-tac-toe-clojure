@@ -11,8 +11,8 @@
 
   (it "returns the rows columns and diagonals"
     (should= (lines [:X :X :X :O :O :O :- :- :-]) [[:X :X :X] [:O :O :O] [:- :- :-]
-                                                  [:X :O :-] [:X :O :-] [:X :O :-]
-                                                  [:X :O :-] [:X :O :-]])))
+                                                   [:X :O :-] [:X :O :-] [:X :O :-]
+                                                   [:X :O :-] [:X :O :-]])))
 
 (describe "Determining a winner"
 
