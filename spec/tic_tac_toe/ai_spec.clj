@@ -29,9 +29,9 @@
 (describe "Going first"
 
   (it "never loses"
-    (should= true (not (contains? (set (flatten (play-all-boards (new-board 3) :X :ai))) :lose)))))
+    (should-not-contain :lose (all-games (new-board 3) :X :ai))))
 
 (describe "Going second"
 
   (it "never loses"
-    (should= true (not (contains? (set (flatten (play-all-boards (new-board 3) :O :human))) :lose)))))
+    (should-not-contain :lose (all-games (new-board 3) :O :human))))

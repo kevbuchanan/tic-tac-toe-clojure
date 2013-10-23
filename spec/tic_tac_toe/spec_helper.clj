@@ -22,3 +22,6 @@
         (if (= player :ai)
             (recur (make-move board (next-move board piece) piece) other-piece other-player)
             (pmap #(play-all-boards (make-move board % piece) other-piece other-player) spaces)))))
+
+(defn all-games [board piece player]
+  (set (flatten (play-all-boards board piece player))))
