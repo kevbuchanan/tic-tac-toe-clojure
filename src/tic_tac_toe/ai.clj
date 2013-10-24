@@ -1,5 +1,5 @@
 (ns tic-tac-toe.ai
-  (:require [tic-tac-toe.board :refer [empty-space winner draw? over? empty-board?]]))
+  (:require [tic-tac-toe.board :refer [empty-space winner draw? over? empty-board? board-size]]))
 
 (defn possible-moves [board]
   (keep-indexed #(if (= empty-space %2) %1) board))
@@ -35,6 +35,6 @@
 
 (defn next-move [board piece]
   (if (empty-board? board)
-    4
+    (inc @board-size)
     (let [scores (move-scores board piece)]
       (reduce #(if (< (get scores %1) (get scores %2)) %2 %1) (keys scores)))))

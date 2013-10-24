@@ -1,15 +1,15 @@
 (ns tic-tac-toe.interface
-  (:require [tic-tac-toe.board :refer [empty-space]]
+  (:require [tic-tac-toe.board :refer [empty-space board-size]]
             [tic-tac-toe.validations :refer [valid-move?]]))
 
 (defn print-board [board]
   (println "\n\n\n\n\n\n")
-  (let [rows (partition 3 (map-indexed #(if (= empty-space %2) (keyword (str (+ 1 %1))) %2) board))]
-    (apply println (interpose " | " (map name (nth rows 0))))
-    (println "-------------")
-    (apply println (interpose " | " (map name (nth rows 1))))
-    (println "-------------")
-    (apply println (interpose " | " (map name (nth rows 2))))))
+  (let [rows (partition @board-size (map-indexed #(if (= empty-space %2) (format "%2s" %1) (format "%2s" (name %2))) board))]
+    (loop [print-lines (map #(interpose " |" %) rows)]
+      (apply println (first print-lines))
+      (if (empty? (rest print-lines))
+        nil
+        (recur (rest print-lines))))))
 
 (defn declare-winner [piece board]
   (print-board board)

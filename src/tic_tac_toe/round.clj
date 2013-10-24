@@ -20,4 +20,3 @@
       (recur {:players [(last players) (first players)]
               :pieces [(last pieces) (first pieces)]
               :board (make-move board (get-move player board piece) piece)}))))
-

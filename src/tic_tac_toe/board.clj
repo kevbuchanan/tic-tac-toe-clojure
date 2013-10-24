@@ -2,15 +2,24 @@
 
 (def empty-space :-)
 
+(def board-size (ref 3))
+
 (defn new-board [size]
-  (vec (repeat (* size size) empty-space)))
+  (do (dosync (ref-set board-size size))
+  (vec (repeat (* size size) empty-space))))
+
+(defn first-diagonal [board]
+  (take @board-size (iterate #(+ (inc @board-size) %) 0)))
+
+(defn second-diagonal [board]
+  (take @board-size (iterate #(+ (dec @board-size) %) (dec @board-size))))
 
 (defn lines [board]
-  (let [rows (partition 3 board)]
+  (let [rows (partition @board-size board)]
     (concat rows
       (apply map vector rows)
-      (vector (map #(nth board %) [0 4 8]))
-      (vector (map #(nth board %) [2 4 6])))))
+      (vector (map #(nth board %) (first-diagonal board)))
+      (vector (map #(nth board %) (second-diagonal board))))))
 
 (defn winner [board]
   (first
