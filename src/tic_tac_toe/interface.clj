@@ -1,5 +1,6 @@
 (ns tic-tac-toe.interface
-  (:require [tic-tac-toe.board :refer :all]))
+  (:require [tic-tac-toe.board :refer :all]
+            [tic-tac-toe.validations :refer :all]))
 
 (defn print-board [board]
   (println "\n\n\n\n\n\n")
@@ -26,4 +27,7 @@
 
 (defn request-human-move [board piece]
   (println "Enter a space number")
-  (- (read-string (read-line)) 1))
+  (let [move (read-string (read-line))]
+    (if (valid-move? move board)
+      (- move 1)
+      (recur board piece))))
