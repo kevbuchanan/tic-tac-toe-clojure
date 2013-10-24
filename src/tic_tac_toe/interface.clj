@@ -1,6 +1,6 @@
 (ns tic-tac-toe.interface
-  (:require [tic-tac-toe.board :refer :all]
-            [tic-tac-toe.validations :refer :all]))
+  (:require [tic-tac-toe.board :refer [empty-space]]
+            [tic-tac-toe.validations :refer [valid-move?]]))
 
 (defn print-board [board]
   (println "\n\n\n\n\n\n")

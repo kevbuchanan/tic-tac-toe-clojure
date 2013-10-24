@@ -1,7 +1,7 @@
 (ns tic-tac-toe.round
-  (:require [tic-tac-toe.board :refer :all])
-  (:require [tic-tac-toe.interface :refer :all])
-  (:require [tic-tac-toe.ai :refer :all]))
+  (:require [tic-tac-toe.board :refer [winner over? make-move]]
+            [tic-tac-toe.interface :refer :all]
+            [tic-tac-toe.ai :refer [next-move]]))
 
 (defn get-move [player board piece]
   (if (= player :ai) (next-move board piece) (request-human-move board piece)))
@@ -20,8 +20,4 @@
       (recur {:players [(last players) (first players)]
               :pieces [(last pieces) (first pieces)]
               :board (make-move board (get-move player board piece) piece)}))))
-
-
-
-
 

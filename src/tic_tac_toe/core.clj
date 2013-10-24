@@ -1,7 +1,7 @@
 (ns tic-tac-toe.core
-  (:require [tic-tac-toe.interface :refer :all])
-  (:require [tic-tac-toe.board :refer :all])
-  (:require [tic-tac-toe.round :refer :all]))
+  (:require
+    [tic-tac-toe.board :refer [new-board]]
+    [tic-tac-toe.round :refer [start]]))
 
 (defn -main [& args]
   (if (= (first args) "first")
