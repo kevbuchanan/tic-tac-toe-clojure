@@ -35,6 +35,6 @@
 
 (defn next-move [board piece]
   (if (empty-board? board)
-    (inc @board-size)
+    (inc (board-size board))
     (let [scores (move-scores board piece)]
       (reduce #(if (< (get scores %1) (get scores %2)) %2 %1) (keys scores)))))

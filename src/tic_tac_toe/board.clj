@@ -2,20 +2,27 @@
 
 (def empty-space :-)
 
-(def board-size (ref 3))
+(defn board-size [board]
+  (case (count board)
+    9 3
+    16 4
+    25 5
+    36 6
+    49 7))
 
 (defn new-board [size]
-  (do (dosync (ref-set board-size size))
-  (vec (repeat (* size size) empty-space))))
+  (vec (repeat (* size size) empty-space)))
 
 (defn first-diagonal [board]
-  (take @board-size (iterate #(+ (inc @board-size) %) 0)))
+  (let [size (board-size board)]
+  (take size (iterate #(+ (inc size) %) 0))))
 
 (defn second-diagonal [board]
-  (take @board-size (iterate #(+ (dec @board-size) %) (dec @board-size))))
+  (let [size (board-size board)]
+  (take size (iterate #(+ (dec size) %) (dec size)))))
 
 (defn lines [board]
-  (let [rows (partition @board-size board)]
+  (let [rows (partition (board-size board) board)]
     (concat rows
       (apply map vector rows)
       (vector (map #(nth board %) (first-diagonal board)))
