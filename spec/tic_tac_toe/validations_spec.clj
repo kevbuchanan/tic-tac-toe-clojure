@@ -8,8 +8,14 @@
   (it "returns true if the move is empty space"
     (should (valid-move? 1 (new-board 3))))
 
-  (it "returns false if the move is off the board"
+  (it "returns false if the move is less than 1"
     (should-not (valid-move? 10 (new-board 3))))
+
+  (it "returns false if the move is greater than 9 on a 3x3 board"
+    (should-not (valid-move? 0 (new-board 3))))
+
+  (it "returns false if the move is greater than 49 on a 7x7 board"
+    (should-not (valid-move? 50 (new-board 7))))
 
   (it "returns false if the move is taken"
     (should-not (valid-move? 2 [:- :X :- :- :- :- :- :- :-])))
