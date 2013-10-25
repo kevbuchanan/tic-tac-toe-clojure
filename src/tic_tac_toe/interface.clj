@@ -4,7 +4,7 @@
 
 (defn print-board [board]
   (println "\n\n\n\n\n\n")
-  (let [rows (partition (board-size board) (map-indexed #(if (= empty-space %2) (format "%2s" %1) (format "%2s" (name %2))) board))]
+  (let [rows (partition (board-size board) (map-indexed #(if (= empty-space %2) (format "%2s" (inc %1)) (format "%2s" (name %2))) board))]
     (loop [print-lines (map #(interpose " |" %) rows)]
       (apply println (first print-lines))
       (if (empty? (rest print-lines))
