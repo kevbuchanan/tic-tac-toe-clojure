@@ -6,32 +6,27 @@
 
 (defn board-state-score [board piece]
   (cond (= piece (winner board)) 1000
-        (draw? board) 0
-        :else -1000))
+        (draw? board) 0))
 
 (defn score-factor [player]
   (if (= player :ai) 1000 -1000))
 
-(declare memoized-score)
-
-(defn calculate-score [board space player piece depth]
+(def calculate-score (memoize (fn [board space player piece depth]
   (let [other-piece (first (filter #(and (not= piece %) (not= empty-space %)) board))
-        other-player (if (= player :ai) :human :ai)]
-    (let [moved-board (assoc board space piece)]
+        other-player (if (= player :ai) :human :ai)
+        moved-board (assoc board space piece)]
       (if (over? moved-board)
         (* (board-state-score moved-board piece) (score-factor player) (/ 1 depth))
         (if (= player :ai)
-          (apply min (map #(memoized-score moved-board % other-player other-piece (inc depth)) (possible-moves moved-board)))
-          (apply max (map #(memoized-score moved-board % other-player other-piece (inc depth)) (possible-moves moved-board))))))))
-
-(def memoized-score (memoize calculate-score))
+          (apply min (map #(calculate-score moved-board % other-player other-piece (inc depth)) (possible-moves moved-board)))
+          (apply max (map #(calculate-score moved-board % other-player other-piece (inc depth)) (possible-moves moved-board)))))))))
 
 (defn move-scores [board piece]
   (let [possibilities (possible-moves board)]
     (loop [spaces possibilities scores {}]
       (if (empty? spaces)
         scores
-        (recur (rest spaces) (assoc scores (first spaces) (memoized-score board (first spaces) :ai piece 1)))))))
+        (recur (rest spaces) (assoc scores (first spaces) (calculate-score board (first spaces) :ai piece 1)))))))
 
 (defn next-move [board piece]
   (if (empty-board? board)
