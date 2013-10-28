@@ -19,6 +19,12 @@
     (should= 4 (next-move [:X :- :-
                            :X :- :O
                            :O :O :X] :X))
+    (should= 4 (next-move [:O :- :-
+                           :- :- :-
+                           :- :- :-] :X))
+    (should= 7 (next-move [:O :X :-
+                           :O :X :-
+                           :- :- :-] :X))
     (should= 2 (next-move [:X :X :-
                            :- :- :-
                            :O :O :-] :X))
