@@ -11,17 +11,17 @@
   (println "")
   :lose))
 
-(defn play-all-boards [board piece player]
+(defn play-all-boards [board piece player difficulty]
   (let [other-piece (if (= piece :X) :O :X)
         other-player (if (= player :ai) :human :ai)
         spaces (possible-moves board)]
     (if (over? board)
         (cond (draw? board) :draw
-            (= player :ai) (check-board board)
+            (= player :ai) :lose
             (= player :human) :win)
         (if (= player :ai)
-            (recur (make-move board (next-move board piece 3) piece) other-piece other-player)
-            (pmap #(play-all-boards (make-move board % piece) other-piece other-player) spaces)))))
+            (recur (make-move board (next-move board piece difficulty) piece) other-piece other-player difficulty)
+            (pmap #(play-all-boards (make-move board % piece) other-piece other-player difficulty) spaces)))))
 
-(defn all-games [board piece player]
-  (set (flatten (play-all-boards board piece player))))
+(defn all-games [board piece player difficulty]
+  (flatten (play-all-boards board piece player difficulty)))
