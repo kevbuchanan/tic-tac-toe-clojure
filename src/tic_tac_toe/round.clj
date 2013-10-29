@@ -19,4 +19,5 @@
       (show-turn piece board)
       (recur {:players [(last players) (first players)]
               :pieces [(last pieces) (first pieces)]
-              :board (make-move board (get-move player board piece difficulty) piece)}))))
+              :board (make-move board (get-move player board piece difficulty) piece)
+              :difficulty difficulty}))))

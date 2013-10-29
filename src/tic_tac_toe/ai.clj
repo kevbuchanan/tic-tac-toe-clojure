@@ -63,7 +63,14 @@
           (recur (rest spaces) (rest boards) (assoc scores (first spaces) score)))))))
 
 (defn next-move [board piece difficulty]
-  (if (empty-board? board)
-    (inc (board-size board))
-    (let [scores (move-scores board piece)]
-      (reduce #(if (< (get scores %1) (get scores %2)) %2 %1) (keys scores)))))
+  (cond (= difficulty 1) (rand-nth (possible-moves board))
+        (= difficulty 2)
+          (let [other-piece-count (count (filter #(= % (other-piece board piece)) board))]
+            (if (< other-piece-count (dec (board-size board)))
+              (recur board piece 1)
+              (recur board piece 3)))
+        (= difficulty 3)
+          (if (empty-board? board)
+            (inc (board-size board))
+            (let [scores (move-scores board piece)]
+              (reduce #(if (< (get scores %1) (get scores %2)) %2 %1) (keys scores))))))
