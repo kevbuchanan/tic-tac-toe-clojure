@@ -62,7 +62,7 @@
                                             piece))]
           (recur (rest spaces) (rest boards) (assoc scores (first spaces) score)))))))
 
-(defn next-move [board piece]
+(defn next-move [board piece difficulty]
   (if (empty-board? board)
     (inc (board-size board))
     (let [scores (move-scores board piece)]

@@ -13,10 +13,10 @@
   (describe "getting the next move"
 
     (it "gets the next move from the ai"
-      (should= 4 (get-move :ai (new-board 3) :X)))
+      (should= 4 (get-move :ai (new-board 3) :X 3)))
 
     (it "gets the next move from the human player"
-      (should= 4 (with-in-str "5" (get-move :human (new-board 3) :O)))))
+      (should= 4 (with-in-str "5" (get-move :human (new-board 3) :O 3)))))
 
   (describe "ending the game"
 

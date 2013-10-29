@@ -9,28 +9,28 @@
   (it "returns the best move"
     (should= 4 (next-move [:- :- :-
                            :- :- :-
-                           :- :- :-] :X))
+                           :- :- :-] :X 3))
     (should= 2 (next-move [:X :X :-
                            :X :O :O
-                           :O :O :X] :X))
+                           :O :O :X] :X 3))
     (should= 2 (next-move [:X :- :-
                            :X :O :O
-                           :O :- :X] :X))
+                           :O :- :X] :X 3))
     (should= 4 (next-move [:X :- :-
                            :X :- :O
-                           :O :O :X] :X))
+                           :O :O :X] :X 3))
     (should= 4 (next-move [:O :- :-
                            :- :- :-
-                           :- :- :-] :X))
+                           :- :- :-] :X 3))
     (should= 7 (next-move [:O :X :-
                            :O :X :-
-                           :- :- :-] :X))
+                           :- :- :-] :X 3))
     (should= 2 (next-move [:X :X :-
                            :- :- :-
-                           :O :O :-] :X))
+                           :O :O :-] :X 3))
     (should= 0 (next-move [:- :- :-
                            :X :X :O
-                           :O :O :X] :X))))
+                           :O :O :X] :X 3))))
 
 (describe "Going first"
 
