@@ -21,14 +21,21 @@
 (defn alpha [depth]
   (if (odd? depth) (/ -1 (inc depth)) 0))
 
+(defn optimizations [board piece depth]
+  (let [piece-count (count (filter #{piece} board))]
+    (or (and (> (board-size board) 3) (< piece-count (dec (board-size board))))
+        (and (> (board-size board) 3) (> depth 3)))))
+
 (defrecord Node [parent board children type depth score piece])
 
 (def calculate-score (memoize (fn [node]
   (let [alpha (alpha (:depth node))
         board-score (board-state-score (:board node) (:piece node) (:type node) (:depth node))
         other-piece (other-piece (:board node) (:piece node))]
-    (if (or board-score (empty? (:children node)) (and (:score node) (= (:score node) alpha)))
-      (let [score (or board-score (:score node))]
+    (if (or board-score (empty? (:children node))
+        (and (:score node) (= (:score node) alpha))
+        (optimizations (:board node) other-piece (:depth node)))
+      (let [score (or board-score (:score node) 0)]
         (if (= nil (:parent node))
           score
           (if (= :min (:type node))

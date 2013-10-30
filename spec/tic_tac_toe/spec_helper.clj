@@ -21,7 +21,7 @@
             (= player :human) :win)
         (if (= player :ai)
             (recur (make-move board (next-move board piece difficulty) piece) other-piece other-player difficulty)
-            (pmap #(play-all-boards (make-move board % piece) other-piece other-player difficulty) spaces)))))
+            (map #(play-all-boards (make-move board % piece) other-piece other-player difficulty) spaces)))))
 
 (defn all-games [board piece player difficulty]
   (flatten (play-all-boards board piece player difficulty)))

@@ -44,7 +44,7 @@
 
   (it "loses more than it wins with difficulty 1"
     (def games (all-games (new-board 3) :X :ai 1))
-    (should (> (count (filter #{:lose} games)) (count (filter #{:win} games))))))
+    (should-not (< (count (filter #{:lose} games)) (count (filter #{:win} games))))))
 
 (describe "Going second"
 
@@ -58,4 +58,4 @@
 
   (it "loses more than it wins with difficulty 1"
     (def games (all-games (new-board 3) :O :human 1))
-    (should (> (count (filter #{:lose} games)) (count (filter #{:win} games))))))
+    (should-not (< (count (filter #{:lose} games)) (count (filter #{:win} games))))))
