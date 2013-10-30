@@ -25,4 +25,4 @@
               (recur (into (rest boards) (possible-boards board turn)) outcomes first-move difficulty))))))
 
 (defn all-games [boards outcomes first-move difficulty]
-  (flatten (play-all-boards boards outcomes first-move difficulty)))
+  (play-all-boards boards outcomes first-move difficulty))
