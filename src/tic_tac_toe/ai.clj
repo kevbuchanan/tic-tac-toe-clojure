@@ -40,10 +40,10 @@
           score
           (if (= :min (:type node))
             (if (or (= nil (:score (:parent node))) (< score (:score (:parent node))))
-              (recur (update-in (:parent node) [:score] #(or score %)))
+              (recur (assoc (:parent node) :score score))
               (recur (:parent node)))
             (if (or (= nil (:score (:parent node))) (> score (:score (:parent node))))
-              (recur (update-in (:parent node) [:score] #(or score %)))
+              (recur (assoc (:parent node) :score score))
               (recur (:parent node))))))
       (let [next-node (Node. (update-in node [:children] rest)
                              (first (:children node))
