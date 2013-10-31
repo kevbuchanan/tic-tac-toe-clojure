@@ -12,14 +12,14 @@
     (map #(assoc board % piece) spaces)))
 
 (defn score-factor [type]
-  (if (= type :max) 1 -1))
+  (if (= type :min) 1 -1))
 
 (defn board-state-score [board piece type depth]
   (cond (= piece (winner board)) (/ (* (score-factor type) 1) depth)
         (draw? board) 0))
 
 (defn get-alpha [depth]
-  (if (odd? depth) (/ -1 (inc depth)) 0))
+  (if (odd? depth) (/ -1 (inc depth)) (/ 1 (inc depth))))
 
 (defrecord Node [parent board children type depth score piece])
 
@@ -30,14 +30,14 @@
     (if (or board-score
         (empty? (:children node))
         (and (:score node) (= (:score node) alpha)))
-      (let [score (or board-score (:score node) 0)]
+      (let [score (or board-score (:score node))]
         (if (= nil (:parent node))
           score
           (if (= :min (:type node))
-            (if (or (= nil (:score (:parent node))) (< score (:score (:parent node))))
+            (if (> score (:score (:parent node)))
               (recur (assoc (:parent node) :score score))
               (recur (:parent node)))
-            (if (or (= nil (:score (:parent node))) (> score (:score (:parent node))))
+            (if (< score (:score (:parent node)))
               (recur (assoc (:parent node) :score score))
               (recur (:parent node))))))
       (let [next-node (Node. (update-in node [:children] rest)
@@ -45,7 +45,7 @@
                              (possible-boards (first (:children node)) (:piece node))
                              (if (= (:type node) :max) :min :max)
                              (inc (:depth node))
-                             nil
+                             (if (= (:type node) :max) Float/POSITIVE_INFINITY Float/NEGATIVE_INFINITY)
                              other-piece)]
         (recur next-node)))))))
 
@@ -58,9 +58,9 @@
         (let [score (calculate-score (Node. nil
                                             (first boards)
                                             (possible-boards (first boards) (other-piece (first boards) piece))
-                                            :max
+                                            :min
                                             1
-                                            nil
+                                            Float/POSITIVE_INFINITY
                                             piece))]
           (recur (rest spaces) (rest boards) (assoc scores (first spaces) score)))))))
 
