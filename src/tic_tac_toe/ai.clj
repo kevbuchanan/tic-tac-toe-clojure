@@ -18,27 +18,28 @@
   (cond (= piece (winner board)) (/ (* (score-factor type) 1) depth)
         (draw? board) 0))
 
-(defn get-alpha [depth]
+(defn get-max [depth]
   (if (odd? depth) (/ -1 (inc depth)) (/ 1 (inc depth))))
 
-(defrecord Node [parent board children type depth score piece])
+(defrecord Node [parent board children type depth score piece alpha beta])
 
 (def calculate-score (memoize (fn [node]
-  (let [alpha (get-alpha (:depth node))
+  (let [next-max (get-max (:depth node))
         board-score (board-state-score (:board node) (:piece node) (:type node) (:depth node))
         other-piece (other-piece (:board node) (:piece node))]
     (if (or board-score
         (empty? (:children node))
-        (and (:score node) (= (:score node) alpha)))
+        (= (:score node) next-max)
+        (> (:alpha node) (:beta node)))
       (let [score (or board-score (:score node))]
         (if (= nil (:parent node))
           score
           (if (= :min (:type node))
             (if (> score (:score (:parent node)))
-              (recur (assoc (:parent node) :score score))
+              (recur (assoc (:parent node) :score score :alpha (max score (:alpha (:parent node)))))
               (recur (:parent node)))
             (if (< score (:score (:parent node)))
-              (recur (assoc (:parent node) :score score))
+              (recur (assoc (:parent node) :score score :beta (min score (:beta (:parent node)))))
               (recur (:parent node))))))
       (let [next-node (Node. (update-in node [:children] rest)
                              (first (:children node))
@@ -46,7 +47,9 @@
                              (if (= (:type node) :max) :min :max)
                              (inc (:depth node))
                              (if (= (:type node) :max) Float/POSITIVE_INFINITY Float/NEGATIVE_INFINITY)
-                             other-piece)]
+                             other-piece
+                             (:alpha node)
+                             (:beta node))]
         (recur next-node)))))))
 
 (defn move-scores [board piece]
@@ -61,7 +64,9 @@
                                             :min
                                             1
                                             Float/POSITIVE_INFINITY
-                                            piece))]
+                                            piece
+                                            Float/NEGATIVE_INFINITY
+                                            Float/POSITIVE_INFINITY))]
           (recur (rest spaces) (rest boards) (assoc scores (first spaces) score)))))))
 
 (defn next-move [board piece difficulty]
