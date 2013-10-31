@@ -21,4 +21,7 @@
     (should-not (valid-move? 2 [:- :X :- :- :- :- :- :- :-])))
 
   (it "returns false if the move was not a number"
-    (should-not (valid-move? "a;dlsfa" (new-board 3)))))
+    (should-not (valid-move? "a;dlsfa" (new-board 3))))
+
+  (it "returns false if the move was a space"
+    (should-not (valid-move? " " (new-board 3)))))

@@ -14,7 +14,7 @@
 (defn start [{:keys [players pieces board difficulty move-fn end-fn turn-fn]}]
   (let [move-fn (or move-fn get-move)
         end-fn (or end-fn end-game)
-        turn-fn (or turn-fn show-turn)])
+        turn-fn (or turn-fn show-turn)]
   (if (over? board)
     (end-fn board)
     (let [player (first players)
@@ -26,4 +26,4 @@
               :difficulty difficulty
               :move-fn move-fn
               :end-fn end-fn
-              :turn-fn turn-fn}))))
+              :turn-fn turn-fn})))))

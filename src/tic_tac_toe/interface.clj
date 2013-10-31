@@ -27,10 +27,8 @@
 
 (defn request-human-move [board piece]
   (println "Enter a space number")
-  (let [input (read-line)]
-    (if (not (empty? input))
-    (let [move (read-string input)]
-      (if (valid-move? move board)
-        (- move 1)
-        (recur board piece)))
-    (recur board piece))))
+  (let [input (read-line)
+        move (try (read-string input) (catch Exception e))]
+    (if (valid-move? move board)
+      (- move 1)
+      (recur board piece))))
