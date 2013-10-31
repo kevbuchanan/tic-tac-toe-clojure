@@ -23,24 +23,25 @@
 
 (defrecord Node [parent board children type depth score piece alpha beta])
 
-(def calculate-score (memoize (fn [node]
+(def calculate-score (memoize (fn [node max-depth]
   (let [next-max (get-max (:depth node))
         board-score (board-state-score (:board node) (:piece node) (:type node) (:depth node))
         other-piece (other-piece (:board node) (:piece node))]
     (if (or board-score
         (empty? (:children node))
         (= (:score node) next-max)
-        (> (:alpha node) (:beta node)))
+        (> (:alpha node) (:beta node))
+        (= (:depth node) max-depth))
       (let [score (or board-score (:score node))]
         (if (= nil (:parent node))
           score
           (if (= :min (:type node))
             (if (> score (:score (:parent node)))
-              (recur (assoc (:parent node) :score score :alpha (max score (:alpha (:parent node)))))
-              (recur (:parent node)))
+              (recur (assoc (:parent node) :score score :alpha (max score (:alpha (:parent node)))) max-depth)
+              (recur (:parent node) max-depth))
             (if (< score (:score (:parent node)))
-              (recur (assoc (:parent node) :score score :beta (min score (:beta (:parent node)))))
-              (recur (:parent node))))))
+              (recur (assoc (:parent node) :score score :beta (min score (:beta (:parent node)))) max-depth)
+              (recur (:parent node) max-depth)))))
       (let [next-node (Node. (update-in node [:children] rest)
                              (first (:children node))
                              (possible-boards (first (:children node)) (:piece node))
@@ -50,11 +51,17 @@
                              other-piece
                              (:alpha node)
                              (:beta node))]
-        (recur next-node)))))))
+        (recur next-node max-depth)))))))
+
+(defn get-max-depth [board piece]
+  (if (> (board-size board) 3)
+    3
+    10))
 
 (defn move-scores [board piece]
   (let [moves (possible-moves board)
-        all-boards (possible-boards board piece)]
+        all-boards (possible-boards board piece)
+        max-depth (get-max-depth board piece)]
     (loop [spaces moves boards all-boards scores {}]
       (if (empty? spaces)
         scores
@@ -66,7 +73,7 @@
                                             Float/POSITIVE_INFINITY
                                             piece
                                             Float/NEGATIVE_INFINITY
-                                            Float/POSITIVE_INFINITY))]
+                                            Float/POSITIVE_INFINITY) max-depth)]
           (recur (rest spaces) (rest boards) (assoc scores (first spaces) score)))))))
 
 (defn next-move [board piece difficulty]
