@@ -1,7 +1,7 @@
 (ns tic-tac-toe.validations-spec
   (:require [speclj.core :refer :all]
             [tic-tac-toe.validations :refer :all]
-            [tic-tac-toe.board :refer :all]))
+            [tic-tac-toe.board :refer [new-board]]))
 
 (describe "Valid move"
 

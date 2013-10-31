@@ -1,6 +1,6 @@
 (ns tic-tac-toe.spec-helper
   (:require [speclj.core :refer :all]
-            [tic-tac-toe.ai :refer :all]
+            [tic-tac-toe.ai :refer [next-move possible-boards]]
             [tic-tac-toe.board :refer :all]))
 
 (defn find-turn [board first-move]

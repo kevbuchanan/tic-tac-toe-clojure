@@ -1,7 +1,7 @@
 (ns tic-tac-toe.interface-spec
   (:require [speclj.core :refer :all]
             [tic-tac-toe.interface :refer :all]
-            [tic-tac-toe.board :refer :all]))
+            [tic-tac-toe.board :refer [new-board]]))
 
 (describe "Printing the board"
 

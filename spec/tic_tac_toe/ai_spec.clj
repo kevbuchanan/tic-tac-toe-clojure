@@ -2,7 +2,7 @@
   (:require [speclj.core :refer :all]
             [tic-tac-toe.ai :refer :all]
             [tic-tac-toe.spec-helper :refer :all]
-            [tic-tac-toe.board :refer :all]))
+            [tic-tac-toe.board :refer [new-board]]))
 
 (describe "Getting the next move"
 
