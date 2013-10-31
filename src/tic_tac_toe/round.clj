@@ -11,13 +11,19 @@
     (declare-winner (winner board) board)
     (declare-draw board)))
 
-(defn start [{:keys [players pieces board difficulty]}]
+(defn start [{:keys [players pieces board difficulty move-fn end-fn turn-fn]}]
+  (let [move-fn (or move-fn get-move)
+        end-fn (or end-fn end-game)
+        turn-fn (or turn-fn show-turn)])
   (if (over? board)
-    (end-game board)
+    (end-fn board)
     (let [player (first players)
           piece (first pieces)]
-      (show-turn piece board)
+      (turn-fn piece board)
       (recur {:players [(last players) (first players)]
               :pieces [(last pieces) (first pieces)]
-              :board (make-move board (get-move player board piece difficulty) piece)
-              :difficulty difficulty}))))
+              :board (make-move board (move-fn player board piece difficulty) piece)
+              :difficulty difficulty
+              :move-fn move-fn
+              :end-fn end-fn
+              :turn-fn turn-fn}))))

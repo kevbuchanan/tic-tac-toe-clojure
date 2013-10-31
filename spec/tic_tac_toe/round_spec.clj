@@ -28,4 +28,41 @@
     (it "declares a win if the game is won"
       (should= :win (end-game [:X :X :X
                                :O :O :X
-                               :O :X :O])))))
+                               :O :X :O]))))
+
+  (describe "starting a round"
+
+    (defn move-test1 [player board piece difficulty] 1)
+
+    (defn end-test [board] board)
+
+    (defn turn-test [piece board] true)
+
+    (it "ends if the game is over"
+      (should= [:X :- :X :O :O :O :- :- :-] (start {:players [:ai :human]
+                             :pieces [:X :O]
+                             :board [:X :- :X :O :O :O :- :- :-]
+                             :difficulty 3
+                             :move-fn move-test1
+                             :end-fn end-test
+                             :turn-fn turn-test})))
+
+    (it "gets a move from the first player if the game is not over"
+      (should= [:X :X :X :O :O :- :- :- :-] (start {:players [:ai :human]
+                             :pieces [:X :O]
+                             :board [:X :- :X :O :O :- :- :- :-]
+                             :difficulty 3
+                             :move-fn move-test1
+                             :end-fn end-test
+                             :turn-fn turn-test})))
+
+    (defn move-test2 [player board piece difficulty] (if (= player :ai) 8 5))
+
+    (it "recurs and gets a move from the other player if the game is still not over"
+      (should= [:X :- :X :O :O :O :- :- :X] (start {:players [:ai :human]
+                             :pieces [:X :O]
+                             :board [:X :- :X :O :O :- :- :- :-]
+                             :difficulty 3
+                             :move-fn move-test2
+                             :end-fn end-test
+                             :turn-fn turn-test})))))
