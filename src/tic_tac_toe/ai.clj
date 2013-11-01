@@ -17,7 +17,7 @@
 
 (defrecord Node [parent board children type depth score piece alpha beta])
 
-(def calculate-score (memoize (fn [node max-depth]
+(defn calculate-score [node max-depth]
   (let [next-max (get-max (:depth node))
         board-score (board-state-score (:board node) (:piece node) (:type node) (:depth node))
         other-piece (other-piece (:board node) (:piece node))]
@@ -45,7 +45,7 @@
                              other-piece
                              (:alpha node)
                              (:beta node))]
-        (recur next-node max-depth)))))))
+        (recur next-node max-depth)))))
 
 (defn get-max-depth [board piece]
   (if (> (board-size board) 3)
