@@ -1,15 +1,9 @@
 (ns tic-tac-toe.ai
-  (:require [tic-tac-toe.board :refer [empty-space winner draw? over? empty-board? board-size]]))
-
-(defn other-piece [board piece]
-  (first (filter #(and (not= piece %) (not= empty-space %)) board)))
-
-(defn possible-moves [board]
-  (keep-indexed #(if (= empty-space %2) %1) board))
+  (:require [tic-tac-toe.board :refer :all]))
 
 (defn possible-boards [board piece]
   (let [spaces (possible-moves board)]
-    (map #(assoc board % piece) spaces)))
+    (map #(make-move board % piece) spaces)))
 
 (defn score-factor [type]
   (if (= type :min) 1 -1))

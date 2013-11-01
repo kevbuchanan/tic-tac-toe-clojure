@@ -77,3 +77,13 @@
   (it "returns false if the board is not empty"
     (should= (empty-board? [:X :- :- :- :- :- :- :- :-]) false)))
 
+(describe "Finding the other piece"
+
+  (it "returns the other piece"
+    (should= :X (other-piece [:X :O :- :- :- :- :- :- :-] :O))))
+
+(describe "Finding possible moves"
+
+  (it "returns a collection of possible moves"
+    (should= [0 1 2] (possible-moves [:- :- :- :X :O :X :O :X :O]))))
+

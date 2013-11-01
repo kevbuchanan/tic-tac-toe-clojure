@@ -46,3 +46,9 @@
 
 (defn empty-board? [board]
   (every? #(= empty-space %) board))
+
+(defn other-piece [board piece]
+  (first (filter #(and (not= piece %) (not= empty-space %)) board)))
+
+(defn possible-moves [board]
+  (keep-indexed #(if (= empty-space %2) %1) board))
