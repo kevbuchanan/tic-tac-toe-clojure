@@ -29,11 +29,12 @@
       (vector (map #(nth board %) (second-diagonal board))))))
 
 (defn winner [board]
-  (first
-  (first
-    (filter
-      #(and (= 1 (count %)) (not (contains? % empty-space)))
-      (map #(set %) (lines board))))))
+  (->> board
+      lines
+      (map set)
+      (filter #(and (= 1 (count %)) (not (contains? % empty-space))))
+      first
+      first))
 
 (defn draw? [board]
   (not (some #(= empty-space %) board)))
